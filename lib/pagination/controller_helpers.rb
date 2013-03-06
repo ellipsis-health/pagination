@@ -27,7 +27,7 @@ module Pagination
       paginate_filter
       @results = yield.paginate(:per_page => params[:per_page], :page => params[:page])
       respond_to do |format|
-        format.json @results
+        format.json {render json: @results}
       end
     end
   end
