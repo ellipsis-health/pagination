@@ -1,0 +1,19 @@
+<% if results.num_pages > 1 %>
+  <div class="pagination pagination-centered">
+    <ul>
+      <li <% if results.page == 1%>class="disabled"<% end %> >
+      <%= page_link "«", params, prev_page(results) %>
+      </li>
+      <% pages(results).each do |page_num| %>
+        <li <% if page_num == results.page %>class="active"<% end %>>
+        <%= page_link page_num, params, page_num %>
+        </li>
+      <% end %>
+      <li <% if results.page == results.num_pages %>class="disabled"<% end %> >
+      <%= page_link "»", params, next_page(results) %></li>
+      </li>
+    </ul>
+  </div>
+<% else %>
+  <div class="pagination"></div>
+<% end %>
