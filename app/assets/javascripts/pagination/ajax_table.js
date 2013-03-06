@@ -33,7 +33,7 @@ var AjaxTable = Class.extend({
       var ajaxTable = this;
       $.getJSON(url,function(data){
         ajaxTable.renderTable(data.results,merge);
-        ajaxTable.updatePaginationLinks(data.pagination);
+        ajaxTable.updatePaginationLinks(data);
         ajaxTable.data = data.results;
         ajaxTable.pagination = data.pagination;
       });
@@ -146,10 +146,10 @@ var AjaxTable = Class.extend({
     var links = [];
     if(paging.page - 2 < 1){
       start = 1;
-      stop = Math.min(5,paging.total_pages);
-    }else if(paging.page + 2 > paging.total_pages){
-      start = Math.max(1,paging.total_pages - 4);
-      stop = paging.total_pages;
+      stop = Math.min(5,paging.num_pages);
+    }else if(paging.page + 2 > paging.num_pages){
+      start = Math.max(1,paging.num_pages - 4);
+      stop = paging.num_pages;
     }else{
       start = paging.page - 2;
       stop = paging.page + 2;
@@ -176,7 +176,7 @@ var AjaxTable = Class.extend({
 
   nextLink: function (paging){
     var li = this.createLink(paging, this.nextPage(paging), '»');
-    if (paging.page == paging.total_pages) li.addClass('disabled');
+    if (paging.page == paging.num_pages) li.addClass('disabled');
     return li;
   },
 
@@ -198,6 +198,6 @@ var AjaxTable = Class.extend({
   },
 
   nextPage: function (paging) {
-    return Math.min(paging.page +1, paging.total_pages);
+    return Math.min(paging.page +1, paging.num_pages);
   }
 });
