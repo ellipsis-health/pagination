@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Pagination::VERSION
   s.authors     = ["Dieterich Lawson"]
   s.email       = ["dieterich.lawson@gmail.com"]
-  s.homepage    = "ellipsishealth.com"
+  s.homepage    = "http://ellipsishealth.com"
   s.summary     = "Page your relations"
   s.description = "Provides a set of convenience methods for working with pagination and tables."
 
