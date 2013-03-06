@@ -13,11 +13,8 @@ Gem::Specification.new do |s|
   s.summary     = "Page your relations"
   s.description = "Provides a set of convenience methods for working with pagination and tables."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
+  s.files = Dir["{app,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
 
   s.add_dependency "rails", "~> 3.2.11"
-  # s.add_dependency "jquery-rails"
-
-  s.add_development_dependency "sqlite3"
+  s.add_dependency "jquery-rails"
 end
