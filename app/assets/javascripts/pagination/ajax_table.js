@@ -35,7 +35,6 @@ var AjaxTable = Class.extend({
         ajaxTable.renderTable(data.results,merge);
         ajaxTable.updatePaginationLinks(data);
         ajaxTable.data = data.results;
-        ajaxTable.pagination = data.pagination;
       });
     }else{
       this.body.html('');
@@ -132,7 +131,8 @@ var AjaxTable = Class.extend({
   },
 
   paginationLinks:  function(paging){
-    if(paging.total_pages <= 1) return $('<div class="pagination" />');
+    console.log(paging);
+    if(paging.num_pages <= 1) return $('<div class="pagination" />');
     var links = $('<div>').addClass('pagination pagination-centered');
     links.append('<ul>');
     $.each(this.createLinks(paging), function(index, val){

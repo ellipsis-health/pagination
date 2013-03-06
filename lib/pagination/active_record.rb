@@ -43,6 +43,8 @@ module Pagination
           # Active Record 4
           all
         end
+        num_pages = (rel.count / per_page.to_f).ceil
+        page_num = num_pages if page_num > num_pages
         rel = rel.extending(RelationMethods)
         rel = rel.limit(per_page).offset(per_page * (page_num - 1))
         rel
