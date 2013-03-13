@@ -32,6 +32,7 @@ module Pagination
     end
     module Pagination
       def paginate opts
+        Rails.logger.info "PAGINATE CALLED WITH #{opts}"
         page_num  = (opts.delete(:page)  || 1).to_i
         per_page = (opts.delete(:per_page) || 10).to_i
         rel = if ::ActiveRecord::Relation === self
@@ -45,6 +46,7 @@ module Pagination
         end
         num_pages = (rel.count / per_page.to_f).ceil
         page_num = num_pages if page_num > num_pages
+        page_num = [page_num, 1].max
         rel = rel.extending(RelationMethods)
         rel = rel.limit(per_page).offset(per_page * (page_num - 1))
         rel
