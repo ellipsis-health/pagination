@@ -54,7 +54,9 @@ var AjaxTable = Class.extend({
       items.push(ajaxTable.rowForData(val).outerHTML());
     });
     this.body.html(items.join(''));
-    this.rebindRowEvents();
+    this.body.children('tr').each(function(index,row){
+      ajaxTable.bindRowEvents($(row),data[index]);
+    });
   },
 
   rowForData: function(obj){
@@ -83,22 +85,26 @@ var AjaxTable = Class.extend({
           new_row = ajaxTable.wrapper.children('table').appendRow(ajaxTable.rowForData(actions[index].obj).outerHTML()); 
         }
         rowIndex--;
-        ajaxTable.bindRowEvents(new_row);
+        ajaxTable.bindRowEvents($(new_row), actions[index].obj);
       }
       rowIndex++;
     });
   },
 
-  bindRowEvents: function(row){
-    if(this.settings.row_dbclick_fn) row.dblclick(this.settings.row_dbclick_fn);
-    if(this.settings.row_click_fn) row.click(this.settings.row_click_fn);
+  bindRowEvents: function(row, data){
+    var ajaxTable = this;
+    if(this.settings.row_dbclick_fn){
+      row.dblclick(function(){
+        ajaxTable.settings.row_dbclick_fn(data);
+      });
+    }
+    if(this.settings.row_click_fn) {
+      row.click(function(){
+        ajaxTable.settings.row_click_fn(data);
+      });
+    }
   },
 
-  rebindRowEvents: function(){
-    if(this.settings.row_dbclick_fn) this.body.children('tr').dblclick(this.settings.row_dbclick_fn);
-    if(this.settings.row_click_fn) this.body.children('tr').click(this.settings.row_click_fn);
-  },
-  
   url: function(page, per_page){
     var baseURL = null;
     if($.isFunction(this.settings.url)){
@@ -106,7 +112,13 @@ var AjaxTable = Class.extend({
     }else{
       baseURL = this.settings.url;
     }
-    if(baseURL) baseURL += '&page=' + page + '&per_page=' + per_page;
+    if(baseURL){
+      if(baseURL.indexOf("&") == -1){
+        baseURL += '?page=' + page + '&per_page=' + per_page;
+      }else{
+        baseURL += '&page=' + page + '&per_page=' + per_page;
+      }
+    }
     return baseURL;
   },
 
@@ -131,7 +143,6 @@ var AjaxTable = Class.extend({
   },
 
   paginationLinks:  function(paging){
-    console.log(paging);
     if(paging.num_pages <= 1) return $('<div class="pagination" />');
     var links = $('<div>').addClass('pagination pagination-centered');
     links.append('<ul>');
