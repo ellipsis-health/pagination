@@ -112,13 +112,7 @@ var AjaxTable = Class.extend({
     }else{
       baseURL = this.settings.url;
     }
-    if(baseURL){
-      if(baseURL.indexOf("&") == -1){
-        baseURL += '?page=' + page + '&per_page=' + per_page;
-      }else{
-        baseURL += '&page=' + page + '&per_page=' + per_page;
-      }
-    }
+    if(baseURL) return urlWithParams(baseURL, {page: page, per_page: per_page });
     return baseURL;
   },
 
