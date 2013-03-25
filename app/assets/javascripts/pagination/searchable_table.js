@@ -3,14 +3,14 @@ $.fn.searchableTable = function(opts){
   var table = new SearchableTable(opts);
   $(this).data('ajaxTable',table);
 }
-var SearchableTable = AjaxTable.extend({
+var SearchableTable = AccessoryTable.extend({
   settings: {
     search_param: 'search',
     placeholder: 'Search'
   },
 
   search_html: '<form class="navbar-search" autocomplete="off">' +
-                 '<input id="search-box" type="text" class="search-query" placeholder="{{placeholder}}">' +
+               '<input id="search-box" type="text" class="search-query" placeholder="{{placeholder}}">' +
                '</form>',
 
   init: function(opts){

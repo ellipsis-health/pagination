@@ -1,4 +1,5 @@
 $.fn.ajaxTable = function(opts){
+  if($(this).data('ajaxTable') != undefined) return $(this).data('ajaxTable');
   opts.selector = $(this).selector;
   var table = new AjaxTable(opts);
   $(this).data('ajaxTable',table);
@@ -12,17 +13,24 @@ var AjaxTable = Class.extend({
   settings: {
     selector: null,
     url: null,
-    columns: [],
+    columns: null,
+    row_template : null,
     row_id: 'id',
     per_page: 10,
     row_click_fn: null,
     row_dbclick_fn: null,
+    cursor: null
+  },
+
+  setCursor: function(cursor){
+    this.settings.cursor = cursor;
   },
 
   init: function(opts){
     this.settings = $.extend({},this.settings,opts);
     this.wrapper = $(this.settings.selector);
     this.body = this.wrapper.find('tbody');
+    if(this.settings.cursor != null) this.body.css('cursor', this.settings.cursor);
   },
  
   page: 1,
@@ -40,6 +48,10 @@ var AjaxTable = Class.extend({
       this.body.html('');
       this.wrapper.find('.pagination').html('');
     }
+  },
+
+  redraw: function(){
+    this.renderTable(this.data, false);
   },
 
   renderTable: function(data,merge){
@@ -60,6 +72,21 @@ var AjaxTable = Class.extend({
   },
 
   rowForData: function(obj){
+    var row = null;                
+    if(this.settings.row_template != null){
+      row = this.rowFromMustacheTemplate(obj);
+    }else{
+      row = this.rowFromColumnList(obj);
+    }
+    return row;
+  },
+
+  rowFromMustacheTemplate: function(obj){
+     var html = Mustache.to_html(this.settings.row_template, obj).trim();
+     return  $("<div/>").html(html).contents();
+  },
+
+  rowFromColumnList: function(obj){
     var row = $('<tr id="' + this.getRowId(obj) + '"></tr>');
     var ajaxTable = this;
     $.each(this.settings.columns, function(colIndex,col){
