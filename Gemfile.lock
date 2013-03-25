@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ellipsis-health/jscommon.git
-  revision: 6e9141ac1ff644a030684c880070721540cf9bc2
+  revision: b78e70fddddc5b5d73a44c18aeee3c37865e6e21
   specs:
     jscommon (0.0.1)
       rails (~> 3.2.12)
